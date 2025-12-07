@@ -10,9 +10,7 @@ class User(AbstractUser):
         STAFF = "staff", "Staff"
         CUSTOMER = "customer", "Customer"
 
-    role = models.CharField(
-        max_length=20, choices=Role.choices, default=Role.CUSTOMER
-    )
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.CUSTOMER)
     keycloak_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     address = models.TextField(blank=True, null=True)

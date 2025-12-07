@@ -1,28 +1,38 @@
 import logging
 
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from orders.models import Order
 
 from .models import Shipment, ShipmentTracking
 from .serializers import (
-    ShipmentSerializer,
     ShipmentCreateSerializer,
+    ShipmentSerializer,
     ShipmentStatusUpdateSerializer,
     ShipmentTrackingSerializer,
 )
 from .services import PostaService
-from orders.models import Order
 
 logger = logging.getLogger(__name__)
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List shipments", description="Get a list of shipments. Users see their own shipments, admins see all."),
-    retrieve=extend_schema(summary="Get shipment details", description="Get detailed information about a specific shipment."),
-    create=extend_schema(summary="Create a shipment", description="Create a shipment for an order. Admin access required."),
+    list=extend_schema(
+        summary="List shipments",
+        description="Get a list of shipments. Users see their own shipments, admins see all.",
+    ),
+    retrieve=extend_schema(
+        summary="Get shipment details",
+        description="Get detailed information about a specific shipment.",
+    ),
+    create=extend_schema(
+        summary="Create a shipment",
+        description="Create a shipment for an order. Admin access required.",
+    ),
 )
 class ShipmentViewSet(viewsets.ModelViewSet):
     """ViewSet for managing shipments."""
@@ -82,7 +92,9 @@ class ShipmentViewSet(viewsets.ModelViewSet):
         summary="Update shipment status",
         description="Update the status of a shipment. Admin access required.",
     )
-    @action(detail=True, methods=["patch"], permission_classes=[permissions.IsAdminUser])
+    @action(
+        detail=True, methods=["patch"], permission_classes=[permissions.IsAdminUser]
+    )
     def update_status(self, request, pk=None):
         shipment = self.get_object()
         serializer = ShipmentStatusUpdateSerializer(

@@ -1,17 +1,18 @@
 import logging
 
-from rest_framework import viewsets, permissions, status
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from drf_spectacular.utils import extend_schema
+
+from orders.models import Order
 
 from .models import Payment
-from .serializers import PaymentSerializer, PaymentInitiateSerializer
+from .serializers import PaymentInitiateSerializer, PaymentSerializer
 from .services import PaymobService
-from orders.models import Order
 
 logger = logging.getLogger(__name__)
 
@@ -152,7 +153,9 @@ class PaymobCallbackView(APIView):
             payment.order.save(update_fields=["status"])
         else:
             payment.status = Payment.Status.FAILED
-            payment.error_message = data.get("data", {}).get("message", "Payment failed")
+            payment.error_message = data.get("data", {}).get(
+                "message", "Payment failed"
+            )
 
         payment.save()
 

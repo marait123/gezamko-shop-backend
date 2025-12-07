@@ -1,9 +1,10 @@
-import pytest
-from django.urls import reverse
 from decimal import Decimal
 
-from products.models import Product
+import pytest
+from django.urls import reverse
+
 from orders.models import Order, OrderItem
+from products.models import Product
 
 
 @pytest.fixture

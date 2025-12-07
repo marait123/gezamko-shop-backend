@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 from orders.models import Order
 
@@ -75,7 +75,9 @@ class ComplaintResponse(models.Model):
         Complaint, on_delete=models.CASCADE, related_name="responses"
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="complaint_responses"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="complaint_responses",
     )
     message = models.TextField()
     is_staff_response = models.BooleanField(default=False)

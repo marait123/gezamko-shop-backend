@@ -3,7 +3,12 @@
     "allow": [
       "Bash(timeout:*)",
       "Bash(curl:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(mkdir:*)",
+      "Bash(venvScriptspip install pre-commit black isort)",
+      "Bash(./venv/Scripts/pip install:*)",
+      "Bash(./venv/Scripts/pre-commit install:*)",
+      "Bash(./venv/Scripts/pre-commit run:*)"
     ],
     "deny": [],
     "ask": []

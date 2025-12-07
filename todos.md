@@ -103,27 +103,3 @@ the ci flow will run
 we have 3 types of users for the app the admin of the company, the
 staff, and the customer each can login to the app but each has different
 permissions
-
-# Database Seeding
-
-Populate the database with sample users, products (with real images), and orders:
-
-```bash
-# Full seed
-python manage.py seed_database
-
-# Without downloading images (faster)
-python manage.py seed_database --no-images
-
-# Clear existing data first
-python manage.py seed_database --clear
-
-# Seed only products or users
-python manage.py seed_database --products-only
-python manage.py seed_database --users-only
-```
-
-**Default credentials:**
-- Admin: `admin@gezamko.com` / `admin123!@#`
-- Staff: `staff1@gezamko.com` / `staff123!@#`
-- Customer: `ahmed@example.com` / `customer123!@#`

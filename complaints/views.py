@@ -1,23 +1,31 @@
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import Complaint, ComplaintResponse
 from .serializers import (
-    ComplaintSerializer,
     ComplaintCreateSerializer,
-    ComplaintUpdateSerializer,
-    ComplaintResponseSerializer,
     ComplaintResponseCreateSerializer,
+    ComplaintResponseSerializer,
+    ComplaintSerializer,
+    ComplaintUpdateSerializer,
 )
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List complaints", description="Get a list of complaints. Users see their own complaints, admins see all."),
-    retrieve=extend_schema(summary="Get complaint details", description="Get detailed information about a specific complaint."),
-    create=extend_schema(summary="Create a complaint", description="Create a new complaint ticket."),
+    list=extend_schema(
+        summary="List complaints",
+        description="Get a list of complaints. Users see their own complaints, admins see all.",
+    ),
+    retrieve=extend_schema(
+        summary="Get complaint details",
+        description="Get detailed information about a specific complaint.",
+    ),
+    create=extend_schema(
+        summary="Create a complaint", description="Create a new complaint ticket."
+    ),
 )
 class ComplaintViewSet(viewsets.ModelViewSet):
     """ViewSet for managing complaints."""
@@ -69,7 +77,10 @@ class ComplaintViewSet(viewsets.ModelViewSet):
             if request.user.is_staff and complaint.status == Complaint.Status.OPEN:
                 complaint.status = Complaint.Status.IN_PROGRESS
                 complaint.save(update_fields=["status"])
-            elif not request.user.is_staff and complaint.status == Complaint.Status.WAITING_CUSTOMER:
+            elif (
+                not request.user.is_staff
+                and complaint.status == Complaint.Status.WAITING_CUSTOMER
+            ):
                 complaint.status = Complaint.Status.IN_PROGRESS
                 complaint.save(update_fields=["status"])
 

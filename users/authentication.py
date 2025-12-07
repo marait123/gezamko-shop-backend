@@ -1,8 +1,8 @@
 import logging
 
 from django.conf import settings
-from rest_framework import authentication, exceptions
 from keycloak import KeycloakOpenID
+from rest_framework import authentication, exceptions
 
 from .models import User
 

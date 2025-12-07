@@ -20,7 +20,14 @@ class PaymentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "amount", "status", "transaction_id", "created_at", "updated_at"]
+        read_only_fields = [
+            "id",
+            "amount",
+            "status",
+            "transaction_id",
+            "created_at",
+            "updated_at",
+        ]
 
 
 class PaymentInitiateSerializer(serializers.Serializer):

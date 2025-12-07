@@ -1,6 +1,7 @@
+from decimal import Decimal
+
 import pytest
 from django.urls import reverse
-from decimal import Decimal
 
 from products.models import Product
 

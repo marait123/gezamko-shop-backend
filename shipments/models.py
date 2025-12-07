@@ -30,7 +30,9 @@ class Shipment(models.Model):
     shipping_method = models.CharField(
         max_length=20, choices=Method.choices, default=Method.STANDARD
     )
-    tracking_number = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    tracking_number = models.CharField(
+        max_length=255, unique=True, null=True, blank=True
+    )
     posta_shipment_id = models.CharField(max_length=255, null=True, blank=True)
     shipping_address = models.TextField()
     shipping_city = models.CharField(max_length=100)

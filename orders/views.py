@@ -1,22 +1,32 @@
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from users.permissions import IsAdminUser, IsStaffUser, OrderPermission
 
 from .models import Order
 from .serializers import (
-    OrderSerializer,
     OrderCreateSerializer,
+    OrderSerializer,
     OrderStatusUpdateSerializer,
 )
-from users.permissions import OrderPermission, IsStaffUser, IsAdminUser
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List orders", description="Customers see their own orders. Staff/Admin see all orders."),
-    retrieve=extend_schema(summary="Get order details", description="Get detailed information about a specific order."),
-    create=extend_schema(summary="Create an order", description="Create a new order with items. Customer access."),
+    list=extend_schema(
+        summary="List orders",
+        description="Customers see their own orders. Staff/Admin see all orders.",
+    ),
+    retrieve=extend_schema(
+        summary="Get order details",
+        description="Get detailed information about a specific order.",
+    ),
+    create=extend_schema(
+        summary="Create an order",
+        description="Create a new order with items. Customer access.",
+    ),
 )
 class OrderViewSet(viewsets.ModelViewSet):
     """

@@ -1,7 +1,8 @@
+from decimal import Decimal
+from unittest.mock import MagicMock, patch
+
 import pytest
 from django.urls import reverse
-from decimal import Decimal
-from unittest.mock import patch, MagicMock
 
 from orders.models import Order
 from payments.models import Payment
@@ -102,7 +103,9 @@ class TestPaymentInitiate:
 
         assert response.status_code == 400
 
-    def test_initiate_payment_already_in_progress(self, authenticated_client, order, payment):
+    def test_initiate_payment_already_in_progress(
+        self, authenticated_client, order, payment
+    ):
         """Test initiating payment when one already in progress fails."""
         url = reverse("payments:payment-initiate")
         data = {

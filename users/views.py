@@ -1,8 +1,8 @@
-from rest_framework import generics, permissions
 from drf_spectacular.utils import extend_schema
+from rest_framework import generics, permissions
 
 from .models import User
-from .serializers import UserSerializer, UserProfileUpdateSerializer
+from .serializers import UserProfileUpdateSerializer, UserSerializer
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):

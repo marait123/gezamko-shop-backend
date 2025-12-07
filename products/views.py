@@ -1,27 +1,46 @@
-from rest_framework import viewsets, permissions, status, filters
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import filters, permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.response import Response
+
+from users.permissions import IsStaffUser, ProductPermission
 
 from .models import Product, ProductImage
 from .serializers import (
-    ProductSerializer,
-    ProductListSerializer,
     ProductCreateUpdateSerializer,
     ProductImageSerializer,
+    ProductListSerializer,
+    ProductSerializer,
 )
-from users.permissions import ProductPermission, IsStaffUser
 
 
 @extend_schema_view(
-    list=extend_schema(summary="List all products", description="Get a list of all active products. Public access."),
-    retrieve=extend_schema(summary="Get product details", description="Get detailed information about a specific product. Public access."),
-    create=extend_schema(summary="Create a product", description="Create a new product. Staff/Admin access required."),
-    update=extend_schema(summary="Update a product", description="Update a product. Staff/Admin access required."),
-    partial_update=extend_schema(summary="Partially update a product", description="Partially update a product. Staff/Admin access required."),
-    destroy=extend_schema(summary="Delete a product", description="Delete a product. Staff/Admin access required."),
+    list=extend_schema(
+        summary="List all products",
+        description="Get a list of all active products. Public access.",
+    ),
+    retrieve=extend_schema(
+        summary="Get product details",
+        description="Get detailed information about a specific product. Public access.",
+    ),
+    create=extend_schema(
+        summary="Create a product",
+        description="Create a new product. Staff/Admin access required.",
+    ),
+    update=extend_schema(
+        summary="Update a product",
+        description="Update a product. Staff/Admin access required.",
+    ),
+    partial_update=extend_schema(
+        summary="Partially update a product",
+        description="Partially update a product. Staff/Admin access required.",
+    ),
+    destroy=extend_schema(
+        summary="Delete a product",
+        description="Delete a product. Staff/Admin access required.",
+    ),
 )
 class ProductViewSet(viewsets.ModelViewSet):
     """
@@ -34,7 +53,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     queryset = Product.objects.filter(is_active=True)
     permission_classes = [ProductPermission]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["category", "brand", "size", "color"]
     search_fields = ["name", "description", "sku"]
     ordering_fields = ["price", "created_at", "name"]
@@ -49,7 +72,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        if not self.request.user.is_authenticated or not self.request.user.is_staff_user:
+        if (
+            not self.request.user.is_authenticated
+            or not self.request.user.is_staff_user
+        ):
             queryset = queryset.filter(is_active=True)
         return queryset
 

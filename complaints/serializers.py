@@ -10,7 +10,14 @@ class ComplaintResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ComplaintResponse
-        fields = ["id", "user", "user_email", "message", "is_staff_response", "created_at"]
+        fields = [
+            "id",
+            "user",
+            "user_email",
+            "message",
+            "is_staff_response",
+            "created_at",
+        ]
         read_only_fields = ["id", "user", "is_staff_response", "created_at"]
 
 

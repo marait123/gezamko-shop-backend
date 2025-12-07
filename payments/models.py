@@ -25,7 +25,9 @@ class Payment(models.Model):
     status = models.CharField(
         max_length=20, choices=Status.choices, default=Status.PENDING
     )
-    transaction_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    transaction_id = models.CharField(
+        max_length=255, unique=True, null=True, blank=True
+    )
     paymob_order_id = models.CharField(max_length=255, null=True, blank=True)
     payment_key = models.TextField(null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)

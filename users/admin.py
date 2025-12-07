@@ -23,9 +23,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = BaseUserAdmin.fieldsets + (
         (
             "Role & Permissions",
-            {
-                "fields": ("role",)
-            },
+            {"fields": ("role",)},
         ),
         (
             "Additional Info",
@@ -45,9 +43,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         (
             "Role",
-            {
-                "fields": ("role",)
-            },
+            {"fields": ("role",)},
         ),
         (
             "Additional Info",
