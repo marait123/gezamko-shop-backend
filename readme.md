@@ -1,3 +1,45 @@
+# Setup
+
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Setup pre-commit hooks
+pre-commit install
+
+# Run migrations
+python manage.py migrate
+
+# Run server
+python manage.py runserver
+```
+
+# Committing
+
+Pre-commit hooks auto-format code before each commit:
+
+```bash
+git add .
+git commit -m "your message"
+```
+
+To format all files manually:
+
+```bash
+pre-commit run --all-files
+```
+
+---
+
 this project as an ecommerce backend for selling products online.
 these products are shoes. and can be something else in the future.
 
@@ -124,6 +166,7 @@ python manage.py seed_database --users-only
 ```
 
 **Default credentials:**
+
 - Admin: `admin@gezamko.com` / `admin123!@#`
 - Staff: `staff1@gezamko.com` / `staff123!@#`
 - Customer: `ahmed@example.com` / `customer123!@#`
