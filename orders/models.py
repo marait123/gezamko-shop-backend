@@ -67,6 +67,8 @@ class OrderItem(models.Model):
 
     @property
     def subtotal(self):
+        if self.product_price is None:
+            return 0
         return self.product_price * self.quantity
 
     def save(self, *args, **kwargs):
