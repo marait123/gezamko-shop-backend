@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from users.permissions import IsStaffUser, ProductPermission
 
+from .filters import ProductFilter
 from .models import Product, ProductImage
 from .serializers import (
     ProductCreateUpdateSerializer,
@@ -58,7 +59,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    filterset_fields = ["category", "brand", "size", "color"]
+    filterset_class = ProductFilter
     search_fields = ["name", "description", "sku"]
     ordering_fields = ["price", "created_at", "name"]
     ordering = ["-created_at"]
