@@ -1,0 +1,69 @@
+# Gitleaks Configuration for Gezamko Backend
+# Custom rules and allowlists for secret detection
+
+title = "Gezamko Backend Gitleaks Config"
+
+[extend]
+# Use default gitleaks rules as base
+useDefault = true
+
+# Custom rules for project-specific patterns
+[[rules]]
+id = "django-secret-key"
+description = "Django Secret Key"
+regex = '''DJANGO_SECRET_KEY\s*=\s*['"](.*?)['"]'''
+tags = ["key", "django"]
+keywords = ["django_secret_key", "secret_key"]
+
+[[rules]]
+id = "paymob-api-key"
+description = "Paymob API Key"
+regex = '''PAYMOB_API_KEY\s*=\s*['"](.*?)['"]'''
+tags = ["key", "payment"]
+keywords = ["paymob"]
+
+[[rules]]
+id = "keycloak-secret"
+description = "Keycloak Client Secret"
+regex = '''KEYCLOAK_CLIENT_SECRET\s*=\s*['"](.*?)['"]'''
+tags = ["key", "auth"]
+keywords = ["keycloak"]
+
+# Allowlist for false positives
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''\.github/workflows/.*\.yml$''',
+    '''tests/.*''',
+    '''conftest\.py$''',
+    '''\.env\.example$''',
+]
+
+# Specific commit allowlist
+commits = []
+
+# Regex patterns to ignore
+regexes = [
+    # Test secret keys
+    '''test-secret-key''',
+    '''test_secret_key''',
+    '''dummy[-_]?secret''',
+    '''placeholder''',
+    # Environment variable references
+    '''\$\{.*\}''',
+    '''\$[A-Z_]+''',
+    # Example/template values
+    '''your[-_]?secret[-_]?here''',
+    '''change[-_]?me''',
+]
+
+# Stopwords that indicate test data
+stopwords = [
+    "test",
+    "example",
+    "sample",
+    "dummy",
+    "fake",
+    "mock",
+    "placeholder",
+]

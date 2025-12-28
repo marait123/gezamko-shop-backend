@@ -225,3 +225,6 @@ bandit-report.txt
 # OS
 .DS_Store
 Thumbs.db
+documentations/
+security/OWASP_SECURITY_GUIDE.html
+security/OWASP_SECURITY_GUIDE.md

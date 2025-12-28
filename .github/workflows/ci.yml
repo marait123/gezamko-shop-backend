@@ -1,19 +1,54 @@
-name: CI/CD Pipeline
+name: Backend CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
+
+env:
+  PYTHON_VERSION: "3.12"
+  REGISTRY: ${{ secrets.ACR_LOGIN_SERVER }}
+  IMAGE_NAME: gezamko-backend
 
 jobs:
-  test:
-    name: Run Tests
+  # ==================== LINTING ====================
+  lint:
+    name: Code Quality & Linting
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: "pip"
+
+      - name: Install linting tools
+        run: |
+          pip install flake8 black isort mypy types-requests
+
+      - name: Run flake8
+        run: flake8 . --count --statistics --max-line-length=120
+
+      - name: Check code formatting with black
+        run: black --check --diff .
+
+      - name: Check import sorting with isort
+        run: isort --check-only --diff .
+
+      - name: Run mypy type checking
+        run: mypy . --ignore-missing-imports --no-error-summary || true
+
+  # ==================== TESTING ====================
+  test:
+    name: Tests with Coverage
+    runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:16-alpine
+        image: postgres:16-alpine@sha256:d898b0b78a2627cb4ee63464a14571e9c2e2c5edce77f21507b1f8e4c3d5a3b7
         env:
           POSTGRES_DB: test_db
           POSTGRES_USER: postgres
@@ -33,28 +68,35 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-cov bandit
+          pip install pytest pytest-cov pytest-django
 
       - name: Run tests with coverage
         env:
           DEBUG: "True"
-          DJANGO_SECRET_KEY: "test-secret-key-for-ci"
+          DJANGO_SECRET_KEY: "test-secret-key-for-ci-${{ github.run_id }}"
           DB_NAME: test_db
           DB_USER: postgres
           DB_PASSWORD: postgres
           DB_HOST: localhost
           DB_PORT: 5432
         run: |
-          pytest --cov=. --cov-report=xml --cov-report=html -v
+          pytest --cov=. --cov-report=xml --cov-report=html --cov-fail-under=70 -v
 
-      - name: Upload coverage reports
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
+
+      - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
@@ -62,10 +104,10 @@ jobs:
             coverage.xml
             htmlcov/
 
-  bandit-security-scan:
-    name: Bandit Security Scan
+  # ==================== SAST - BANDIT ====================
+  bandit:
+    name: SAST - Bandit Security Scan
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,30 +115,146 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install Bandit
-        run: pip install bandit
+        run: pip install bandit[toml]
 
       - name: Run Bandit security scan
         run: |
-          bandit -r . -x ./venv,./tests,./.git -f json -o bandit-report.json || true
-          bandit -r . -x ./venv,./tests,./.git -f txt -o bandit-report.txt || true
-          cat bandit-report.txt
+          bandit -r . -x ./venv,./tests,./.git -f json -o bandit-report.json -ll
+          bandit -r . -x ./venv,./tests,./.git -f sarif -o bandit-report.sarif -ll || true
+
+      - name: Upload Bandit SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: bandit-report.sarif
+          category: bandit
 
       - name: Upload Bandit report
         uses: actions/upload-artifact@v4
         with:
-          name: bandit-security-report
-          path: |
-            bandit-report.json
-            bandit-report.txt
+          name: bandit-report
+          path: bandit-report.json
 
-  sonarqube-scan:
+      - name: Fail on HIGH severity issues
+        run: |
+          HIGH_COUNT=$(cat bandit-report.json | jq '[.results[] | select(.issue_severity == "HIGH")] | length')
+          if [ "$HIGH_COUNT" -gt 0 ]; then
+            echo "Found $HIGH_COUNT HIGH severity issues!"
+            exit 1
+          fi
+
+  # ==================== SAST - SEMGREP ====================
+  semgrep:
+    name: SAST - Semgrep Analysis
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        run: |
+          semgrep scan \
+            --config "p/python" \
+            --config "p/django" \
+            --config "p/security-audit" \
+            --config "p/secrets" \
+            --sarif --output semgrep-results.sarif \
+            --json --output semgrep-results.json \
+            --error || true
+
+      - name: Upload Semgrep SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep-results.sarif
+          category: semgrep
+
+      - name: Upload Semgrep results
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-report
+          path: |
+            semgrep-results.json
+            semgrep-results.sarif
+
+  # ==================== SCA - DEPENDENCY SCANNING ====================
+  sca:
+    name: SCA - Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies and scanning tools
+        run: |
+          pip install -r requirements.txt
+          pip install pip-audit safety
+
+      - name: Run pip-audit
+        run: |
+          pip-audit --format json --output pip-audit-report.json || true
+          pip-audit --format cyclonedx-json --output sbom-pip.json || true
+
+      - name: Run Safety check
+        run: |
+          safety check --json --output safety-report.json || true
+
+      - name: Upload SCA reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca-reports
+          path: |
+            pip-audit-report.json
+            safety-report.json
+            sbom-pip.json
+
+      - name: Check for critical vulnerabilities
+        run: |
+          CRITICAL_COUNT=$(cat pip-audit-report.json | jq 'length' 2>/dev/null || echo "0")
+          echo "Found $CRITICAL_COUNT vulnerable dependencies"
+          # Fail on critical issues - adjust threshold as needed
+          if [ "$CRITICAL_COUNT" -gt 5 ]; then
+            echo "Too many vulnerabilities found!"
+            exit 1
+          fi
+
+  # ==================== SECRET SCANNING ====================
+  secrets:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: false
+
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+  # ==================== SONARQUBE ====================
+  sonarqube:
     name: SonarQube Analysis
     runs-on: ubuntu-latest
     needs: test
-
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -117,39 +275,17 @@ jobs:
           args: >
             -Dsonar.projectKey=gezamko-shop-backend
             -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.qualitygate.wait=true
 
-  lint:
-    name: Code Linting
+  # ==================== BUILD & PUSH ====================
+  build:
+    name: Build & Push Container Image
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install linting tools
-        run: |
-          pip install flake8 black isort
-
-      - name: Run flake8
-        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
-
-      - name: Check code formatting with black
-        run: black --check . || true
-
-      - name: Check import sorting with isort
-        run: isort --check-only . || true
-
-  build-docker:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    needs: [test, bandit-security-scan]
-    if: github.ref == 'refs/heads/main'
-
+    needs: [test, bandit, sca, secrets]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build-push.outputs.digest }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -157,11 +293,128 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push
+        id: build-push
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: false
-          tags: gezamko-shop-backend:${{ github.sha }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+  # ==================== CONTAINER SCANNING ====================
+  container-scan:
+    name: Container Vulnerability Scan
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+
+      - name: Upload Trivy scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: trivy
+
+  # ==================== SBOM GENERATION ====================
+  sbom:
+    name: Generate SBOM
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Generate SBOM with Syft
+        uses: anchore/sbom-action@v0
+        with:
+          image: "${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.cyclonedx.json
+
+      - name: Attest SBOM
+        uses: actions/attest-sbom@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          subject-name: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ needs.build.outputs.image_digest }}
+          sbom-path: 'sbom.cyclonedx.json'
+          push-to-registry: true
+
+  # ==================== IMAGE SIGNING ====================
+  sign:
+    name: Sign Container Image
+    runs-on: ubuntu-latest
+    needs: [build, container-scan]
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign image with Cosign (keyless)
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        run: |
+          cosign sign --yes ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}@${{ needs.build.outputs.image_digest }}

@@ -1,0 +1,30 @@
+# CODEOWNERS for Gezamko Backend Repository
+# These owners will be automatically requested for review
+
+# Default owners for everything in the repo
+* @gezamko-backend-team
+
+# Django settings and configuration
+/gezamko/ @gezamko-backend-team @tech-leads
+
+# Security-sensitive settings
+/gezamko/settings.py @security-team @tech-leads
+
+# Authentication and authorization
+/users/ @security-team @gezamko-backend-team
+
+# Payment integration - requires senior review
+/payments/ @gezamko-backend-team @tech-leads @security-team
+
+# GitHub workflows
+/.github/workflows/ @gezamko-sre
+
+# Docker configuration
+/Dockerfile @gezamko-sre @gezamko-backend-team
+/docker-compose*.yml @gezamko-sre
+
+# Dependencies - security review for changes
+/requirements*.txt @security-team @gezamko-backend-team
+
+# This CODEOWNERS file
+/.github/CODEOWNERS @tech-leads

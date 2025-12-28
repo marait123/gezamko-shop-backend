@@ -1,0 +1,109 @@
+# Dependabot Configuration for Gezamko Backend
+# Automated dependency updates for security and maintenance
+---
+version: 2
+
+registries:
+  python-index:
+    type: python-index
+    url: https://pypi.org/simple
+
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "gezamko-sre"
+    labels:
+      - "dependencies"
+      - "python"
+      - "security"
+    commit-message:
+      prefix: "deps(python)"
+    groups:
+      # Group Django-related updates
+      django:
+        patterns:
+          - "django*"
+          - "djangorestframework*"
+          - "drf-*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group security-related updates
+      security:
+        patterns:
+          - "cryptography"
+          - "pyopenssl"
+          - "certifi"
+          - "urllib3"
+          - "requests"
+        update-types:
+          - "minor"
+          - "patch"
+      # Group testing tools
+      testing:
+        patterns:
+          - "pytest*"
+          - "coverage"
+          - "factory*"
+          - "faker"
+      # Group linting tools
+      linting:
+        patterns:
+          - "black"
+          - "flake8*"
+          - "isort"
+          - "mypy"
+          - "bandit"
+    ignore:
+      # Ignore major version updates for Django (requires manual review)
+      - dependency-name: "django"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "gezamko-sre"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci-cd"
+    commit-message:
+      prefix: "ci(actions)"
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Docker base images
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "06:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "gezamko-sre"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "security"
+    commit-message:
+      prefix: "deps(docker)"
