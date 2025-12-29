@@ -260,7 +260,7 @@ jobs:
     name: Build & Push Container Image
     runs-on: ubuntu-latest
     needs: test # needs: [test, secrets] # needs: [test, bandit, sca, secrets]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     outputs:
       image_tag: ${{ steps.meta.outputs.tags }}
       image_digest: ${{ steps.build-push.outputs.digest }}
