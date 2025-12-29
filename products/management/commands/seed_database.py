@@ -182,9 +182,7 @@ class Command(BaseCommand):
                     validate_password(password, user=user)
                 except ValidationError as exc:
                     self.stdout.write(
-                        self.style.WARNING(
-                            f"  Password for {user.username} failed validation: {exc.messages}"
-                        )
+                        self.style.WARNING(f"  Password for {user.username} failed validation: {exc.messages}")
                     )
                 user.set_password(password)
                 user.save()
