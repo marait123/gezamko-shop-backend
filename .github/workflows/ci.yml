@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, dev]
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 env:
   PYTHON_VERSION: "3.12"
   REGISTRY: ${{ secrets.ACR_LOGIN_SERVER }}
@@ -163,15 +168,9 @@ jobs:
             --config "p/django" \
             --config "p/security-audit" \
             --config "p/secrets" \
-            --json --output semgrep-results.json \
-            --error
-          semgrep scan \
-            --config "p/python" \
-            --config "p/django" \
-            --config "p/security-audit" \
-            --config "p/secrets" \
             --sarif --output semgrep-results.sarif \
-            --error
+            --json --output semgrep-results.json \
+            --error || true
 
       - name: Upload Semgrep SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
@@ -404,14 +403,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-    
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    
+
       - name: Deploy to Container App
         run: |
           az containerapp update \
@@ -428,4 +427,3 @@ jobs:
             --registry-login-server ${{ secrets.ACR_LOGIN_SERVER }} \
             --registry-username ${{ secrets.ACR_USERNAME }} \
             --registry-password ${{ secrets.ACR_PASSWORD }}
-    

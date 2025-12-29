@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from .models import User
@@ -47,6 +48,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["password"] != attrs["password_confirm"]:
             raise serializers.ValidationError({"password_confirm": "Passwords do not match."})
+        # Validate password strength
+        validate_password(attrs["password"])
         return attrs
 
     def create(self, validated_data):
@@ -54,7 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.role = User.Role.CUSTOMER
-        user.set_password(password)
+        user.set_password(password)  # nosemgrep: unvalidated-password
         user.save()
         return user
 
@@ -122,10 +125,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "phone_number",
         ]
 
+    def validate_password(self, value):
+        validate_password(value)
+        return value
+
     def create(self, validated_data):
         password = validated_data.pop("password")
         user = User(**validated_data)
-        user.set_password(password)
+        user.set_password(password)  # nosemgrep: unvalidated-password
         user.save()
         return user
 

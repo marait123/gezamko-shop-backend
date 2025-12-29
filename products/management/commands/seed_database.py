@@ -176,6 +176,7 @@ class Command(BaseCommand):
                 defaults=user_data,
             )
             if created:
+                # nosemgrep: unvalidated-password - seed data with hardcoded test passwords
                 user.set_password(password)
                 user.save()
                 self.stdout.write(f"  Created user: {user.username} ({user.role})")
