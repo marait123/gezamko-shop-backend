@@ -390,7 +390,7 @@ jobs:
 
       - name: Attest SBOM
         uses: actions/attest-sbom@v2
-        if: github.ref == 'refs/heads/dev'
+        if: github.repository == 'marait123/gezamko-shop-backend' && github.ref == 'refs/heads/dev'
         with:
           subject-name: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ needs.build.outputs.image_digest }}
