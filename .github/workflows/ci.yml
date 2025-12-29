@@ -267,6 +267,9 @@ jobs:
       image_tag: ${{ steps.meta.outputs.tags }}
       image_digest: ${{ steps.build-push.outputs.digest }}
     steps:
+      - name: Set image tag
+        run: echo "IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -296,12 +299,15 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: true
           sbom: true
+
 
   # ==================== CONTAINER SCANNING ====================
   container-scan:
@@ -422,4 +428,4 @@ jobs:
           az containerapp update \
             --name gezamko-backend \
             --resource-group oaminmasters \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:latest
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:${{ env.IMAGE_TAG }}
