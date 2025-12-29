@@ -37,7 +37,7 @@ jobs:
         run: black --check --diff .
 
       - name: Check import sorting with isort
-        run: isort --check-only --diff .
+        run: isort --check-only --diff --profile black .
 
       - name: Run mypy type checking
         run: mypy . --ignore-missing-imports --no-error-summary
