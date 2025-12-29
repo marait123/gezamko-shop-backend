@@ -118,12 +118,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install Bandit
-        run: pip install bandit[toml]
+        run: pip install bandit[sarif]
 
       - name: Run Bandit security scan
         run: |
           bandit -r . -x ./venv,./tests,./.git -f json -o bandit-report.json -ll
-          bandit -r . -x ./venv,./tests,./.git -f sarif -o bandit-report.sarif -ll || true
+          bandit -r . -x ./venv,./tests,./.git -f sarif -o bandit-report.sarif -ll
 
       - name: Upload Bandit SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
@@ -163,9 +163,15 @@ jobs:
             --config "p/django" \
             --config "p/security-audit" \
             --config "p/secrets" \
-            --sarif --output semgrep-results.sarif \
             --json --output semgrep-results.json \
-            --error || true
+            --error
+          semgrep scan \
+            --config "p/python" \
+            --config "p/django" \
+            --config "p/security-audit" \
+            --config "p/secrets" \
+            --sarif --output semgrep-results.sarif \
+            --error
 
       - name: Upload Semgrep SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
