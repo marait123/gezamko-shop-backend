@@ -13,7 +13,6 @@ Usage:
     python manage.py seed_database --users-only  # Only seed users
 """
 
-import os
 import random
 import uuid
 from decimal import Decimal
@@ -194,7 +193,11 @@ class Command(BaseCommand):
             # Running Shoes
             {
                 "name": "Nike Air Max 270",
-                "description": "The Nike Air Max 270 delivers visible cushioning under every step. Updated for modern comfort, it features Nike's biggest heel Air unit yet for a super-soft ride that feels as impossible as it looks.",
+                "description": (
+                    "The Nike Air Max 270 delivers visible cushioning under every step. "
+                    "Updated for modern comfort, it features Nike's biggest heel Air unit "
+                    "yet for a super-soft ride that feels as impossible as it looks."
+                ),
                 "price": Decimal("150.00"),
                 "stock": 50,
                 "category": "Running",
@@ -208,7 +211,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Adidas Ultraboost 22",
-                "description": "Experience epic energy with the Adidas Ultraboost 22. These running shoes feature a BOOST midsole for incredible responsiveness and energy return with every stride.",
+                "description": (
+                    "Experience epic energy with the Adidas Ultraboost 22. These running shoes feature "
+                    "a BOOST midsole for incredible responsiveness and energy return with every stride."
+                ),
                 "price": Decimal("180.00"),
                 "stock": 35,
                 "category": "Running",
@@ -222,7 +228,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "New Balance Fresh Foam 1080v12",
-                "description": "The Fresh Foam 1080v12 is designed for long-distance comfort with plush Fresh Foam X cushioning. Perfect for runners who want premium comfort mile after mile.",
+                "description": (
+                    "The Fresh Foam 1080v12 is designed for long-distance comfort with plush Fresh Foam X "
+                    "cushioning. Perfect for runners who want premium comfort mile after mile."
+                ),
                 "price": Decimal("165.00"),
                 "stock": 40,
                 "category": "Running",
@@ -236,7 +245,10 @@ class Command(BaseCommand):
             # Casual Shoes
             {
                 "name": "Converse Chuck Taylor All Star",
-                "description": "The iconic Chuck Taylor All Star. A timeless classic that has been a style staple since 1917. Features canvas upper and rubber sole for everyday wear.",
+                "description": (
+                    "The iconic Chuck Taylor All Star. A timeless classic that has been a style staple since "
+                    "1917. Features canvas upper and rubber sole for everyday wear."
+                ),
                 "price": Decimal("65.00"),
                 "stock": 100,
                 "category": "Casual",
@@ -250,7 +262,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Vans Old Skool",
-                "description": "The Old Skool is Vans' classic skate shoe and the first to feature the iconic side stripe. A comfortable low-top with durable suede and canvas uppers.",
+                "description": (
+                    "The Old Skool is Vans' classic skate shoe and the first to feature the iconic side stripe. "
+                    "A comfortable low-top with durable suede and canvas uppers."
+                ),
                 "price": Decimal("70.00"),
                 "stock": 75,
                 "category": "Casual",
@@ -263,7 +278,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Puma Suede Classic",
-                "description": "The PUMA Suede hit the scene in 1968 and has been an icon ever since. With its signature suede upper and formstrip branding, it's a true original.",
+                "description": (
+                    "The PUMA Suede hit the scene in 1968 and has been an icon ever since. With its signature "
+                    "suede upper and formstrip branding, it's a true original."
+                ),
                 "price": Decimal("75.00"),
                 "stock": 60,
                 "category": "Casual",
@@ -277,7 +295,10 @@ class Command(BaseCommand):
             # Basketball Shoes
             {
                 "name": "Nike Air Jordan 1 Retro High",
-                "description": "The Air Jordan 1 Retro High remakes the legendary sneaker that started it all. Premium leather construction with Nike Air cushioning for unmatched style and comfort.",
+                "description": (
+                    "The Air Jordan 1 Retro High remakes the legendary sneaker that started it all. Premium "
+                    "leather construction with Nike Air cushioning for unmatched style and comfort."
+                ),
                 "price": Decimal("170.00"),
                 "stock": 25,
                 "category": "Basketball",
@@ -291,7 +312,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Adidas Harden Vol. 6",
-                "description": "James Harden's signature shoe built for explosive moves on the court. Features Boost cushioning and a lightweight design for quick cuts and drives.",
+                "description": (
+                    "James Harden's signature shoe built for explosive moves on the court. Features Boost "
+                    "cushioning and a lightweight design for quick cuts and drives."
+                ),
                 "price": Decimal("160.00"),
                 "stock": 30,
                 "category": "Basketball",
@@ -305,7 +329,10 @@ class Command(BaseCommand):
             # Formal Shoes
             {
                 "name": "Cole Haan Oxford Dress Shoe",
-                "description": "Classic Oxford dress shoes crafted with premium leather. Features Grand.OS technology for lightweight comfort that lasts all day.",
+                "description": (
+                    "Classic Oxford dress shoes crafted with premium leather. Features Grand.OS technology for "
+                    "lightweight comfort that lasts all day."
+                ),
                 "price": Decimal("200.00"),
                 "stock": 20,
                 "category": "Formal",
@@ -318,7 +345,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Clarks Desert Boot",
-                "description": "The iconic Clarks Desert Boot. Handcrafted with premium suede and crepe rubber sole. A timeless design that works for any occasion.",
+                "description": (
+                    "The iconic Clarks Desert Boot. Handcrafted with premium suede and crepe rubber sole. "
+                    "A timeless design that works for any occasion."
+                ),
                 "price": Decimal("140.00"),
                 "stock": 35,
                 "category": "Formal",
@@ -332,7 +362,10 @@ class Command(BaseCommand):
             # Training Shoes
             {
                 "name": "Nike Metcon 8",
-                "description": "The Nike Metcon 8 is the gold standard for weight training. Stable, durable, and supportive for your toughest workouts.",
+                "description": (
+                    "The Nike Metcon 8 is the gold standard for weight training. Stable, durable, and "
+                    "supportive for your toughest workouts."
+                ),
                 "price": Decimal("130.00"),
                 "stock": 45,
                 "category": "Training",
@@ -345,7 +378,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Reebok Nano X2",
-                "description": "Built for versatility, the Reebok Nano X2 handles any workout. Floatride Energy Foam provides responsive cushioning for high-intensity training.",
+                "description": (
+                    "Built for versatility, the Reebok Nano X2 handles any workout. Floatride Energy Foam provides "
+                    "responsive cushioning for high-intensity training."
+                ),
                 "price": Decimal("135.00"),
                 "stock": 40,
                 "category": "Training",
@@ -359,7 +395,10 @@ class Command(BaseCommand):
             # Sandals
             {
                 "name": "Birkenstock Arizona",
-                "description": "The iconic Birkenstock Arizona sandal with contoured cork footbed. Offers superior arch support and all-day comfort.",
+                "description": (
+                    "The iconic Birkenstock Arizona sandal with contoured cork footbed. "
+                    "Offers superior arch support and all-day comfort."
+                ),
                 "price": Decimal("100.00"),
                 "stock": 55,
                 "category": "Sandals",
@@ -372,7 +411,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Teva Original Universal",
-                "description": "The sandal that started it all. Quick-dry webbing upper with universal strapping system for a secure, adjustable fit.",
+                "description": (
+                    "The sandal that started it all. Quick-dry webbing upper with universal strapping "
+                    "system for a secure, adjustable fit."
+                ),
                 "price": Decimal("50.00"),
                 "stock": 70,
                 "category": "Sandals",
@@ -386,7 +428,10 @@ class Command(BaseCommand):
             # Hiking Boots
             {
                 "name": "Timberland 6-Inch Premium Boot",
-                "description": "The original Timberland boot. Waterproof construction with premium leather and padded collar for all-day comfort on any terrain.",
+                "description": (
+                    "The original Timberland boot. Waterproof construction with premium leather and padded collar "
+                    "for all-day comfort on any terrain."
+                ),
                 "price": Decimal("198.00"),
                 "stock": 30,
                 "category": "Boots",
@@ -399,7 +444,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Salomon X Ultra 4 GTX",
-                "description": "Lightweight hiking shoe with GORE-TEX waterproof protection. Advanced Chassis technology for stability on technical terrain.",
+                "description": (
+                    "Lightweight hiking shoe with GORE-TEX waterproof protection. Advanced Chassis technology "
+                    "for stability on technical terrain."
+                ),
                 "price": Decimal("175.00"),
                 "stock": 25,
                 "category": "Hiking",
@@ -413,7 +461,10 @@ class Command(BaseCommand):
             # Slip-Ons
             {
                 "name": "TOMS Classic Alpargata",
-                "description": "The shoe that started the One for One movement. Lightweight canvas slip-on with cushioned insole for everyday comfort.",
+                "description": (
+                    "The shoe that started the One for One movement. Lightweight canvas slip-on with "
+                    "cushioned insole for everyday comfort."
+                ),
                 "price": Decimal("55.00"),
                 "stock": 80,
                 "category": "Casual",
@@ -426,7 +477,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Skechers Go Walk 6",
-                "description": "Ultra-lightweight walking shoe with Goga Mat Technology insole. Air-Cooled Memory Foam for maximum comfort.",
+                "description": (
+                    "Ultra-lightweight walking shoe with Goga Mat Technology insole. "
+                    "Air-Cooled Memory Foam for maximum comfort."
+                ),
                 "price": Decimal("80.00"),
                 "stock": 65,
                 "category": "Walking",
@@ -440,7 +494,10 @@ class Command(BaseCommand):
             # Premium/Limited Edition
             {
                 "name": "Nike Dunk Low Retro",
-                "description": "Created for the hardwood but taken to the streets, the Nike Dunk Low Retro returns with crisp overlays and classic team colors.",
+                "description": (
+                    "Created for the hardwood but taken to the streets, the Nike Dunk Low Retro returns with crisp "
+                    "overlays and classic team colors."
+                ),
                 "price": Decimal("110.00"),
                 "stock": 15,
                 "category": "Casual",
@@ -454,7 +511,10 @@ class Command(BaseCommand):
             },
             {
                 "name": "Yeezy Boost 350 V2",
-                "description": "The Yeezy Boost 350 V2 features a Primeknit upper with distinctive center stitching. Full-length Boost cushioning for ultimate comfort.",
+                "description": (
+                    "The Yeezy Boost 350 V2 features a Primeknit upper with distinctive center stitching. "
+                    "Full-length Boost cushioning for ultimate comfort."
+                ),
                 "price": Decimal("230.00"),
                 "stock": 10,
                 "category": "Casual",

@@ -8,7 +8,6 @@ from .models import Complaint, ComplaintResponse
 from .serializers import (
     ComplaintCreateSerializer,
     ComplaintResponseCreateSerializer,
-    ComplaintResponseSerializer,
     ComplaintSerializer,
     ComplaintUpdateSerializer,
 )

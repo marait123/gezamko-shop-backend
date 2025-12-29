@@ -1,6 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import permissions, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -76,7 +76,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary="Cancel order",
-        description="Cancel an order. Customers can cancel their own pending orders. Staff/Admin can cancel any pending order.",
+        description=(
+            "Cancel an order. Customers can cancel their own pending orders. "
+            "Staff/Admin can cancel any pending order."
+        ),
     )
     @action(detail=True, methods=["post"])
     def cancel(self, request, pk=None):
