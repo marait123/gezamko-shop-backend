@@ -1,4 +1,5 @@
 import logging
+from typing import Any, List, Type
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -114,7 +115,7 @@ class PaymobCallbackView(APIView):
     """View for handling Paymob payment callbacks."""
 
     permission_classes = [permissions.AllowAny]
-    authentication_classes = []
+    authentication_classes: List[Type[Any]] = []
 
     @extend_schema(
         summary="Paymob callback",

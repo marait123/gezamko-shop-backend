@@ -40,7 +40,7 @@ jobs:
         run: isort --check-only --diff .
 
       - name: Run mypy type checking
-        run: mypy . --ignore-missing-imports --no-error-summary || true
+        run: mypy . --ignore-missing-imports --no-error-summary
 
   # ==================== TESTING ====================
   test:
