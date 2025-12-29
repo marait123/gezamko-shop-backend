@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import User
@@ -56,6 +58,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.role = User.Role.CUSTOMER
+        try:
+            validate_password(password, user=user)
+        except ValidationError as exc:
+            raise serializers.ValidationError({"password": exc.messages})
         user.set_password(password)
         user.save()
         return user
@@ -127,6 +133,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop("password")
         user = User(**validated_data)
+        try:
+            validate_password(password, user=user)
+        except ValidationError as exc:
+            raise serializers.ValidationError({"password": exc.messages})
         user.set_password(password)
         user.save()
         return user

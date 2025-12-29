@@ -19,6 +19,8 @@ from decimal import Decimal
 from io import BytesIO
 
 import requests
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -176,6 +178,14 @@ class Command(BaseCommand):
                 defaults=user_data,
             )
             if created:
+                try:
+                    validate_password(password, user=user)
+                except ValidationError as exc:
+                    self.stdout.write(
+                        self.style.WARNING(
+                            f"  Password for {user.username} failed validation: {exc.messages}"
+                        )
+                    )
                 user.set_password(password)
                 user.save()
                 self.stdout.write(f"  Created user: {user.username} ({user.role})")
