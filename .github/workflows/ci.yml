@@ -134,6 +134,7 @@ jobs:
       - name: Upload Bandit SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
+        continue-on-error: true
         with:
           sarif_file: bandit-report.sarif
           category: bandit
@@ -176,6 +177,7 @@ jobs:
       - name: Upload Semgrep SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
+        continue-on-error: true
         with:
           sarif_file: semgrep-results.sarif
           category: semgrep
@@ -329,6 +331,7 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
+        continue-on-error: true
         with:
           sarif_file: 'trivy-results.sarif'
           category: trivy
@@ -419,4 +422,3 @@ jobs:
             --name gezamko-backend \
             --resource-group oaminmasters \
             --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:latest
-
