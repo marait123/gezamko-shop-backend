@@ -171,3 +171,6 @@ python manage.py seed_database --users-only
 - Staff: `staff1@gezamko.com` / `staff123!@#`
 - Customer: `ahmed@example.com` / `customer123!@#`
   claude mcp add playwright -s user -- npx -y @playwright/mcp
+
+
+versions: 0.0.1
