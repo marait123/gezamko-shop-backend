@@ -24,3 +24,7 @@ USER appuser
 EXPOSE 8000
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "gezamko.wsgi:application"]
+
+
+COPY startup.sh /app/startup.sh
+ENTRYPOINT ["/app/startup.sh"]
