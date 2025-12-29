@@ -264,7 +264,7 @@ jobs:
     needs: test # needs: [test, secrets] # needs: [test, bandit, sca, secrets]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
+      image_tag: ${{ env.IMAGE_TAG }}
       image_digest: ${{ steps.build-push.outputs.digest }}
     steps:
       - name: Set image tag
@@ -439,4 +439,4 @@ jobs:
           az containerapp update \
             --name gezamko-backend \
             --resource-group oaminmasters \
-            --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:${{ env.IMAGE_TAG }}
+            --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:${{ needs.build.outputs.image_tag }}
