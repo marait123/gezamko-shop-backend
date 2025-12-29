@@ -212,9 +212,8 @@ class Command(BaseCommand):
             {
                 "name": "Adidas Ultraboost 22",
                 "description": (
-                    "Experience epic energy with the Adidas Ultraboost 22. These running "
-                    "shoes feature a BOOST midsole for incredible responsiveness and "
-                    "energy return with every stride."
+                    "Experience epic energy with the Adidas Ultraboost 22. These running shoes feature "
+                    "a BOOST midsole for incredible responsiveness and energy return with every stride."
                 ),
                 "price": Decimal("180.00"),
                 "stock": 35,
@@ -230,9 +229,8 @@ class Command(BaseCommand):
             {
                 "name": "New Balance Fresh Foam 1080v12",
                 "description": (
-                    "The Fresh Foam 1080v12 is designed for long-distance comfort with "
-                    "plush Fresh Foam X cushioning. Perfect for runners who want premium "
-                    "comfort mile after mile."
+                    "The Fresh Foam 1080v12 is designed for long-distance comfort with plush Fresh Foam X "
+                    "cushioning. Perfect for runners who want premium comfort mile after mile."
                 ),
                 "price": Decimal("165.00"),
                 "stock": 40,
@@ -248,9 +246,8 @@ class Command(BaseCommand):
             {
                 "name": "Converse Chuck Taylor All Star",
                 "description": (
-                    "The iconic Chuck Taylor All Star. A timeless classic that has been "
-                    "a style staple since 1917. Features canvas upper and rubber sole "
-                    "for everyday wear."
+                    "The iconic Chuck Taylor All Star. A timeless classic that has been a style staple since "
+                    "1917. Features canvas upper and rubber sole for everyday wear."
                 ),
                 "price": Decimal("65.00"),
                 "stock": 100,
@@ -266,9 +263,8 @@ class Command(BaseCommand):
             {
                 "name": "Vans Old Skool",
                 "description": (
-                    "The Old Skool is Vans' classic skate shoe and the first to feature "
-                    "the iconic side stripe. A comfortable low-top with durable suede "
-                    "and canvas uppers."
+                    "The Old Skool is Vans' classic skate shoe and the first to feature the iconic side stripe. "
+                    "A comfortable low-top with durable suede and canvas uppers."
                 ),
                 "price": Decimal("70.00"),
                 "stock": 75,
@@ -283,9 +279,8 @@ class Command(BaseCommand):
             {
                 "name": "Puma Suede Classic",
                 "description": (
-                    "The PUMA Suede hit the scene in 1968 and has been an icon ever "
-                    "since. With its signature suede upper and formstrip branding, "
-                    "it's a true original."
+                    "The PUMA Suede hit the scene in 1968 and has been an icon ever since. With its signature "
+                    "suede upper and formstrip branding, it's a true original."
                 ),
                 "price": Decimal("75.00"),
                 "stock": 60,
@@ -301,9 +296,8 @@ class Command(BaseCommand):
             {
                 "name": "Nike Air Jordan 1 Retro High",
                 "description": (
-                    "The Air Jordan 1 Retro High remakes the legendary sneaker that "
-                    "started it all. Premium leather construction with Nike Air "
-                    "cushioning for unmatched style and comfort."
+                    "The Air Jordan 1 Retro High remakes the legendary sneaker that started it all. Premium "
+                    "leather construction with Nike Air cushioning for unmatched style and comfort."
                 ),
                 "price": Decimal("170.00"),
                 "stock": 25,
@@ -319,9 +313,8 @@ class Command(BaseCommand):
             {
                 "name": "Adidas Harden Vol. 6",
                 "description": (
-                    "James Harden's signature shoe built for explosive moves on the "
-                    "court. Features Boost cushioning and a lightweight design for "
-                    "quick cuts and drives."
+                    "James Harden's signature shoe built for explosive moves on the court. Features Boost "
+                    "cushioning and a lightweight design for quick cuts and drives."
                 ),
                 "price": Decimal("160.00"),
                 "stock": 30,
@@ -337,8 +330,8 @@ class Command(BaseCommand):
             {
                 "name": "Cole Haan Oxford Dress Shoe",
                 "description": (
-                    "Classic Oxford dress shoes crafted with premium leather. Features "
-                    "Grand.OS technology for lightweight comfort that lasts all day."
+                    "Classic Oxford dress shoes crafted with premium leather. Features Grand.OS technology for "
+                    "lightweight comfort that lasts all day."
                 ),
                 "price": Decimal("200.00"),
                 "stock": 20,
@@ -353,8 +346,8 @@ class Command(BaseCommand):
             {
                 "name": "Clarks Desert Boot",
                 "description": (
-                    "The iconic Clarks Desert Boot. Handcrafted with premium suede and "
-                    "crepe rubber sole. A timeless design that works for any occasion."
+                    "The iconic Clarks Desert Boot. Handcrafted with premium suede and crepe rubber sole. "
+                    "A timeless design that works for any occasion."
                 ),
                 "price": Decimal("140.00"),
                 "stock": 35,
@@ -370,8 +363,8 @@ class Command(BaseCommand):
             {
                 "name": "Nike Metcon 8",
                 "description": (
-                    "The Nike Metcon 8 is the gold standard for weight training. "
-                    "Stable, durable, and supportive for your toughest workouts."
+                    "The Nike Metcon 8 is the gold standard for weight training. Stable, durable, and "
+                    "supportive for your toughest workouts."
                 ),
                 "price": Decimal("130.00"),
                 "stock": 45,
@@ -386,9 +379,8 @@ class Command(BaseCommand):
             {
                 "name": "Reebok Nano X2",
                 "description": (
-                    "Built for versatility, the Reebok Nano X2 handles any workout. "
-                    "Floatride Energy Foam provides responsive cushioning for "
-                    "high-intensity training."
+                    "Built for versatility, the Reebok Nano X2 handles any workout. Floatride Energy Foam provides "
+                    "responsive cushioning for high-intensity training."
                 ),
                 "price": Decimal("135.00"),
                 "stock": 40,
@@ -420,8 +412,8 @@ class Command(BaseCommand):
             {
                 "name": "Teva Original Universal",
                 "description": (
-                    "The sandal that started it all. Quick-dry webbing upper with "
-                    "universal strapping system for a secure, adjustable fit."
+                    "The sandal that started it all. Quick-dry webbing upper with universal strapping "
+                    "system for a secure, adjustable fit."
                 ),
                 "price": Decimal("50.00"),
                 "stock": 70,
@@ -437,8 +429,8 @@ class Command(BaseCommand):
             {
                 "name": "Timberland 6-Inch Premium Boot",
                 "description": (
-                    "The original Timberland boot. Waterproof construction with premium "
-                    "leather and padded collar for all-day comfort on any terrain."
+                    "The original Timberland boot. Waterproof construction with premium leather and padded collar "
+                    "for all-day comfort on any terrain."
                 ),
                 "price": Decimal("198.00"),
                 "stock": 30,
@@ -453,8 +445,8 @@ class Command(BaseCommand):
             {
                 "name": "Salomon X Ultra 4 GTX",
                 "description": (
-                    "Lightweight hiking shoe with GORE-TEX waterproof protection. "
-                    "Advanced Chassis technology for stability on technical terrain."
+                    "Lightweight hiking shoe with GORE-TEX waterproof protection. Advanced Chassis technology "
+                    "for stability on technical terrain."
                 ),
                 "price": Decimal("175.00"),
                 "stock": 25,
@@ -470,8 +462,8 @@ class Command(BaseCommand):
             {
                 "name": "TOMS Classic Alpargata",
                 "description": (
-                    "The shoe that started the One for One movement. Lightweight canvas "
-                    "slip-on with cushioned insole for everyday comfort."
+                    "The shoe that started the One for One movement. Lightweight canvas slip-on with "
+                    "cushioned insole for everyday comfort."
                 ),
                 "price": Decimal("55.00"),
                 "stock": 80,
@@ -503,8 +495,8 @@ class Command(BaseCommand):
             {
                 "name": "Nike Dunk Low Retro",
                 "description": (
-                    "Created for the hardwood but taken to the streets, the Nike Dunk "
-                    "Low Retro returns with crisp overlays and classic team colors."
+                    "Created for the hardwood but taken to the streets, the Nike Dunk Low Retro returns with crisp "
+                    "overlays and classic team colors."
                 ),
                 "price": Decimal("110.00"),
                 "stock": 15,
@@ -520,8 +512,8 @@ class Command(BaseCommand):
             {
                 "name": "Yeezy Boost 350 V2",
                 "description": (
-                    "The Yeezy Boost 350 V2 features a Primeknit upper with distinctive "
-                    "center stitching. Full-length Boost cushioning for ultimate comfort."
+                    "The Yeezy Boost 350 V2 features a Primeknit upper with distinctive center stitching. "
+                    "Full-length Boost cushioning for ultimate comfort."
                 ),
                 "price": Decimal("230.00"),
                 "stock": 10,

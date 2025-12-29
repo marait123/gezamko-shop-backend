@@ -76,8 +76,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary="Cancel order",
-        description="Cancel an order. Customers can cancel their own pending orders. "
-        "Staff/Admin can cancel any pending order.",
+        description=(
+            "Cancel an order. Customers can cancel their own pending orders. "
+            "Staff/Admin can cancel any pending order."
+        ),
     )
     @action(detail=True, methods=["post"])
     def cancel(self, request, pk=None):
