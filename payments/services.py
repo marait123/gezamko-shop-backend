@@ -98,9 +98,7 @@ class PaymobService:
             "state": "NA",
         }
 
-        payment_key = self.get_payment_key(
-            auth_token, paymob_order_id, amount_cents, billing_data
-        )
+        payment_key = self.get_payment_key(auth_token, paymob_order_id, amount_cents, billing_data)
 
         iframe_url = f"https://accept.paymob.com/api/acceptance/iframes/{self.iframe_id}?payment_token={payment_key}"
 
@@ -136,8 +134,6 @@ class PaymobService:
         ]
 
         concatenated = "".join(str(data.get(key, "")) for key in hmac_keys)
-        calculated_hmac = hmac.new(
-            self.hmac_secret.encode(), concatenated.encode(), hashlib.sha512
-        ).hexdigest()
+        calculated_hmac = hmac.new(self.hmac_secret.encode(), concatenated.encode(), hashlib.sha512).hexdigest()
 
         return hmac.compare_digest(calculated_hmac, received_hmac)

@@ -32,9 +32,7 @@ class Product(models.Model):
 class ProductImage(models.Model):
     """Product image model for storing multiple images per product."""
 
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="images"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="products/")
     alt_text = models.CharField(max_length=255, blank=True)
     is_primary = models.BooleanField(default=False)
@@ -50,7 +48,5 @@ class ProductImage(models.Model):
 
     def save(self, *args, **kwargs):
         if self.is_primary:
-            ProductImage.objects.filter(product=self.product, is_primary=True).update(
-                is_primary=False
-            )
+            ProductImage.objects.filter(product=self.product, is_primary=True).update(is_primary=False)
         super().save(*args, **kwargs)

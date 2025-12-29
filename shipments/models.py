@@ -21,18 +21,10 @@ class Shipment(models.Model):
         EXPRESS = "express", "Express Shipping"
         SAME_DAY = "same_day", "Same Day Delivery"
 
-    order = models.OneToOneField(
-        Order, on_delete=models.CASCADE, related_name="shipment"
-    )
-    status = models.CharField(
-        max_length=20, choices=Status.choices, default=Status.PENDING
-    )
-    shipping_method = models.CharField(
-        max_length=20, choices=Method.choices, default=Method.STANDARD
-    )
-    tracking_number = models.CharField(
-        max_length=255, unique=True, null=True, blank=True
-    )
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="shipment")
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    shipping_method = models.CharField(max_length=20, choices=Method.choices, default=Method.STANDARD)
+    tracking_number = models.CharField(max_length=255, unique=True, null=True, blank=True)
     posta_shipment_id = models.CharField(max_length=255, null=True, blank=True)
     shipping_address = models.TextField()
     shipping_city = models.CharField(max_length=100)
@@ -59,9 +51,7 @@ class Shipment(models.Model):
 class ShipmentTracking(models.Model):
     """Model for tracking shipment status updates."""
 
-    shipment = models.ForeignKey(
-        Shipment, on_delete=models.CASCADE, related_name="tracking_updates"
-    )
+    shipment = models.ForeignKey(Shipment, on_delete=models.CASCADE, related_name="tracking_updates")
     status = models.CharField(max_length=100)
     location = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)

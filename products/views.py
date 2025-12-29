@@ -73,10 +73,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Product.objects.all()
-        if (
-            not self.request.user.is_authenticated
-            or not self.request.user.is_staff_user
-        ):
+        if not self.request.user.is_authenticated or not self.request.user.is_staff_user:
             queryset = queryset.filter(is_active=True)
         return queryset
 
@@ -117,6 +114,4 @@ class ProductViewSet(viewsets.ModelViewSet):
             image.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ProductImage.DoesNotExist:
-            return Response(
-                {"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"error": "Image not found"}, status=status.HTTP_404_NOT_FOUND)

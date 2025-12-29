@@ -56,9 +56,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "tracking_number",
-                    models.CharField(
-                        blank=True, max_length=255, null=True, unique=True
-                    ),
+                    models.CharField(blank=True, max_length=255, null=True, unique=True),
                 ),
                 (
                     "posta_shipment_id",
@@ -78,9 +76,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "weight",
-                    models.DecimalField(
-                        blank=True, decimal_places=2, max_digits=10, null=True
-                    ),
+                    models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True),
                 ),
                 ("notes", models.TextField(blank=True)),
                 ("created_at", models.DateTimeField(auto_now_add=True)),

@@ -177,9 +177,7 @@ REST_FRAMEWORK = {
 
 # Add Keycloak authentication in production
 if not DEBUG:
-    REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"].insert(
-        0, "users.authentication.KeycloakAuthentication"
-    )
+    REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"].insert(0, "users.authentication.KeycloakAuthentication")
 
 # DRF Spectacular settings
 SPECTACULAR_SETTINGS = {
@@ -190,15 +188,11 @@ SPECTACULAR_SETTINGS = {
 }
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005"
-).split(",")
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005").split(",")
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for frontend
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005"
-).split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005").split(",")
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = "Lax"

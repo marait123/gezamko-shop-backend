@@ -29,9 +29,7 @@ class Migration(migrations.Migration):
                 ("stock", models.PositiveIntegerField(default=0)),
                 (
                     "sku",
-                    models.CharField(
-                        blank=True, max_length=100, null=True, unique=True
-                    ),
+                    models.CharField(blank=True, max_length=100, null=True, unique=True),
                 ),
                 ("category", models.CharField(blank=True, max_length=100)),
                 ("brand", models.CharField(blank=True, max_length=100)),

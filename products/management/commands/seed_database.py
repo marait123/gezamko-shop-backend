@@ -550,9 +550,7 @@ class Command(BaseCommand):
         """Download images from URLs and save them to the product."""
         for index, url in enumerate(image_urls):
             try:
-                self.stdout.write(
-                    f"    Downloading image {index + 1} for {product.name}..."
-                )
+                self.stdout.write(f"    Downloading image {index + 1} for {product.name}...")
                 response = requests.get(url, timeout=30)
                 response.raise_for_status()
 
@@ -578,9 +576,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"    Saved image: {filename}"))
 
             except requests.exceptions.RequestException as e:
-                self.stdout.write(
-                    self.style.WARNING(f"    Failed to download image from {url}: {e}")
-                )
+                self.stdout.write(self.style.WARNING(f"    Failed to download image from {url}: {e}"))
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f"    Error saving image: {e}"))
 
@@ -595,15 +591,11 @@ class Command(BaseCommand):
         products = Product.objects.filter(is_active=True)
 
         if not customers.exists():
-            self.stdout.write(
-                self.style.WARNING("No customers found. Skipping order creation.")
-            )
+            self.stdout.write(self.style.WARNING("No customers found. Skipping order creation."))
             return
 
         if not products.exists():
-            self.stdout.write(
-                self.style.WARNING("No products found. Skipping order creation.")
-            )
+            self.stdout.write(self.style.WARNING("No products found. Skipping order creation."))
             return
 
         orders_created = 0
@@ -615,9 +607,7 @@ class Command(BaseCommand):
             for _ in range(num_orders):
                 # Select random products for this order
                 num_items = random.randint(1, 4)
-                selected_products = random.sample(
-                    list(products), min(num_items, products.count())
-                )
+                selected_products = random.sample(list(products), min(num_items, products.count()))
 
                 with transaction.atomic():
                     order = Order.objects.create(
@@ -659,8 +649,7 @@ class Command(BaseCommand):
                     order.calculate_total()
                     orders_created += 1
                     self.stdout.write(
-                        f"  Created order #{order.id} for {customer.username} "
-                        f"(${order.total_amount})"
+                        f"  Created order #{order.id} for {customer.username} " f"(${order.total_amount})"
                     )
 
         self.stdout.write(self.style.SUCCESS(f"Created {orders_created} orders."))

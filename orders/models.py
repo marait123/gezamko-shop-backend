@@ -16,12 +16,8 @@ class Order(models.Model):
         CANCELLED = "cancelled", "Cancelled"
         REFUNDED = "refunded", "Refunded"
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
-    )
-    status = models.CharField(
-        max_length=20, choices=Status.choices, default=Status.PENDING
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders")
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     shipping_address = models.TextField()
     shipping_city = models.CharField(max_length=100)
@@ -50,9 +46,7 @@ class OrderItem(models.Model):
     """Order item model for tracking products within an order."""
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(
-        Product, on_delete=models.SET_NULL, null=True, related_name="order_items"
-    )
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name="order_items")
     product_name = models.CharField(max_length=255)
     product_price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)

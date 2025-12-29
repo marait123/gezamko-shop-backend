@@ -28,9 +28,7 @@ class Complaint(models.Model):
         REFUND = "refund", "Refund Request"
         OTHER = "other", "Other"
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="complaints"
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="complaints")
     order = models.ForeignKey(
         Order,
         on_delete=models.SET_NULL,
@@ -40,15 +38,9 @@ class Complaint(models.Model):
     )
     subject = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.CharField(
-        max_length=20, choices=Category.choices, default=Category.OTHER
-    )
-    status = models.CharField(
-        max_length=20, choices=Status.choices, default=Status.OPEN
-    )
-    priority = models.CharField(
-        max_length=20, choices=Priority.choices, default=Priority.MEDIUM
-    )
+    category = models.CharField(max_length=20, choices=Category.choices, default=Category.OTHER)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.OPEN)
+    priority = models.CharField(max_length=20, choices=Priority.choices, default=Priority.MEDIUM)
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -71,9 +63,7 @@ class Complaint(models.Model):
 class ComplaintResponse(models.Model):
     """Model for responses to complaints."""
 
-    complaint = models.ForeignKey(
-        Complaint, on_delete=models.CASCADE, related_name="responses"
-    )
+    complaint = models.ForeignKey(Complaint, on_delete=models.CASCADE, related_name="responses")
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
