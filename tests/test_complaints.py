@@ -4,8 +4,7 @@ import pytest
 from django.urls import reverse
 
 from complaints.models import Complaint
-from orders.models import Order, OrderItem
-from products.models import Product
+from orders.models import Order
 
 
 @pytest.fixture
