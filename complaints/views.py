@@ -22,9 +22,7 @@ from .serializers import (
         summary="Get complaint details",
         description="Get detailed information about a specific complaint.",
     ),
-    create=extend_schema(
-        summary="Create a complaint", description="Create a new complaint ticket."
-    ),
+    create=extend_schema(summary="Create a complaint", description="Create a new complaint ticket."),
 )
 class ComplaintViewSet(viewsets.ModelViewSet):
     """ViewSet for managing complaints."""
@@ -76,10 +74,7 @@ class ComplaintViewSet(viewsets.ModelViewSet):
             if request.user.is_staff and complaint.status == Complaint.Status.OPEN:
                 complaint.status = Complaint.Status.IN_PROGRESS
                 complaint.save(update_fields=["status"])
-            elif (
-                not request.user.is_staff
-                and complaint.status == Complaint.Status.WAITING_CUSTOMER
-            ):
+            elif not request.user.is_staff and complaint.status == Complaint.Status.WAITING_CUSTOMER:
                 complaint.status = Complaint.Status.IN_PROGRESS
                 complaint.save(update_fields=["status"])
 

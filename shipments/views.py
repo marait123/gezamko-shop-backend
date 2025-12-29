@@ -92,14 +92,10 @@ class ShipmentViewSet(viewsets.ModelViewSet):
         summary="Update shipment status",
         description="Update the status of a shipment. Admin access required.",
     )
-    @action(
-        detail=True, methods=["patch"], permission_classes=[permissions.IsAdminUser]
-    )
+    @action(detail=True, methods=["patch"], permission_classes=[permissions.IsAdminUser])
     def update_status(self, request, pk=None):
         shipment = self.get_object()
-        serializer = ShipmentStatusUpdateSerializer(
-            shipment, data=request.data, partial=True
-        )
+        serializer = ShipmentStatusUpdateSerializer(shipment, data=request.data, partial=True)
 
         if serializer.is_valid():
             old_status = shipment.status

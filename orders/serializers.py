@@ -97,15 +97,11 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         order = Order.objects.create(user=user, **validated_data)
 
         for item_data in items_data:
-            product = Product.objects.select_for_update().get(
-                id=item_data["product_id"]
-            )
+            product = Product.objects.select_for_update().get(id=item_data["product_id"])
             quantity = item_data["quantity"]
 
             if product.stock < quantity:
-                raise serializers.ValidationError(
-                    f"Insufficient stock for {product.name}"
-                )
+                raise serializers.ValidationError(f"Insufficient stock for {product.name}")
 
             OrderItem.objects.create(
                 order=order,

@@ -74,9 +74,7 @@ class ShipmentCreateSerializer(serializers.ModelSerializer):
         try:
             order = Order.objects.get(id=value)
             if hasattr(order, "shipment"):
-                raise serializers.ValidationError(
-                    "A shipment already exists for this order"
-                )
+                raise serializers.ValidationError("A shipment already exists for this order")
             return value
         except Order.DoesNotExist:
             raise serializers.ValidationError("Order does not exist")

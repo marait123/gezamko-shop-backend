@@ -42,9 +42,7 @@ class PostaService:
         }
 
         try:
-            response = requests.post(
-                url, json=payload, headers=self._get_headers(), timeout=30
-            )
+            response = requests.post(url, json=payload, headers=self._get_headers(), timeout=30)
             response.raise_for_status()
             data = response.json()
 
@@ -103,9 +101,7 @@ class PostaService:
         }
 
         try:
-            response = requests.post(
-                url, json=payload, headers=self._get_headers(), timeout=30
-            )
+            response = requests.post(url, json=payload, headers=self._get_headers(), timeout=30)
             response.raise_for_status()
             return response.json().get("rates", [])
         except requests.RequestException as e:

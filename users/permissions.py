@@ -5,22 +5,14 @@ class IsAdminUser(permissions.BasePermission):
     """Permission class for admin users only."""
 
     def has_permission(self, request, view):
-        return bool(
-            request.user
-            and request.user.is_authenticated
-            and request.user.is_admin_user
-        )
+        return bool(request.user and request.user.is_authenticated and request.user.is_admin_user)
 
 
 class IsStaffUser(permissions.BasePermission):
     """Permission class for staff and admin users."""
 
     def has_permission(self, request, view):
-        return bool(
-            request.user
-            and request.user.is_authenticated
-            and request.user.is_staff_user
-        )
+        return bool(request.user and request.user.is_authenticated and request.user.is_staff_user)
 
 
 class IsCustomer(permissions.BasePermission):
@@ -39,11 +31,7 @@ class IsAdminOrStaffOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return bool(
-            request.user
-            and request.user.is_authenticated
-            and request.user.is_staff_user
-        )
+        return bool(request.user and request.user.is_authenticated and request.user.is_staff_user)
 
 
 class IsOwnerOrStaff(permissions.BasePermission):
@@ -82,11 +70,7 @@ class ProductPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return bool(
-            request.user
-            and request.user.is_authenticated
-            and request.user.is_staff_user
-        )
+        return bool(request.user and request.user.is_authenticated and request.user.is_staff_user)
 
 
 class OrderPermission(permissions.BasePermission):

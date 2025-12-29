@@ -26,9 +26,7 @@ class ComplaintSerializer(serializers.ModelSerializer):
 
     responses = ComplaintResponseSerializer(many=True, read_only=True)
     user_email = serializers.CharField(source="user.email", read_only=True)
-    assigned_to_email = serializers.CharField(
-        source="assigned_to.email", read_only=True, allow_null=True
-    )
+    assigned_to_email = serializers.CharField(source="assigned_to.email", read_only=True, allow_null=True)
 
     class Meta:
         model = Complaint
@@ -71,9 +69,7 @@ class ComplaintCreateSerializer(serializers.ModelSerializer):
         if value:
             user = self.context["request"].user
             if value.user != user and not user.is_staff:
-                raise serializers.ValidationError(
-                    "You can only create complaints for your own orders"
-                )
+                raise serializers.ValidationError("You can only create complaints for your own orders")
         return value
 
 

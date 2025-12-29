@@ -22,12 +22,8 @@ class Payment(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="payments")
     payment_method = models.CharField(max_length=20, choices=Method.choices)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(
-        max_length=20, choices=Status.choices, default=Status.PENDING
-    )
-    transaction_id = models.CharField(
-        max_length=255, unique=True, null=True, blank=True
-    )
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    transaction_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
     paymob_order_id = models.CharField(max_length=255, null=True, blank=True)
     payment_key = models.TextField(null=True, blank=True)
     metadata = models.JSONField(default=dict, blank=True)

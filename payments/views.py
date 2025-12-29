@@ -45,9 +45,7 @@ class PaymentViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             order = Order.objects.get(id=order_id, user=request.user)
         except Order.DoesNotExist:
-            return Response(
-                {"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
         if order.status != Order.Status.PENDING:
             return Response(
@@ -129,9 +127,7 @@ class PaymobCallbackView(APIView):
 
         if not paymob_service.verify_hmac(data, hmac_value):
             logger.warning("Invalid HMAC signature in Paymob callback")
-            return Response(
-                {"error": "Invalid signature"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Invalid signature"}, status=status.HTTP_400_BAD_REQUEST)
 
         paymob_order_id = str(data.get("order", ""))
         transaction_id = str(data.get("id", ""))
@@ -141,9 +137,7 @@ class PaymobCallbackView(APIView):
             payment = Payment.objects.get(paymob_order_id=paymob_order_id)
         except Payment.DoesNotExist:
             logger.error(f"Payment not found for Paymob order: {paymob_order_id}")
-            return Response(
-                {"error": "Payment not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"error": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
 
         payment.transaction_id = transaction_id
         payment.metadata = data
@@ -154,15 +148,10 @@ class PaymobCallbackView(APIView):
             payment.order.save(update_fields=["status"])
         else:
             payment.status = Payment.Status.FAILED
-            payment.error_message = data.get("data", {}).get(
-                "message", "Payment failed"
-            )
+            payment.error_message = data.get("data", {}).get("message", "Payment failed")
 
         payment.save()
 
-        logger.info(
-            f"Payment {payment.id} {'completed' if success else 'failed'} "
-            f"for order {payment.order.id}"
-        )
+        logger.info(f"Payment {payment.id} {'completed' if success else 'failed'} " f"for order {payment.order.id}")
 
         return Response({"status": "received"})
