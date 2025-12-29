@@ -57,4 +57,4 @@ class OrderItemAdmin(admin.ModelAdmin):
     def subtotal(self, obj):
         return obj.subtotal
 
-    subtotal.short_description = "Subtotal"
+    subtotal.short_description = "Subtotal"  # type: ignore
