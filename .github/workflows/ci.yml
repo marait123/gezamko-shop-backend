@@ -427,7 +427,7 @@ jobs:
   deploy:
     name: Deploy to Azure Container App
     runs-on: ubuntu-latest
-    needs: build  #needs: [build, sign]  # make sure image exists
+    needs: sign  #needs: [build, sign]  # make sure image exists
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
