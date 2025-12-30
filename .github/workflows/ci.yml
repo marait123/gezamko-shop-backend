@@ -390,16 +390,12 @@ jobs:
 
       - name: Attest SBOM
         uses: actions/attest-sbom@v2
-        if: github.ref == 'refs/heads/dev'
+        if: github.ref == 'refs/heads/main'
         with:
-          github-token: ${{ secrets.ATTESTATION_PAT }}
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.build.outputs.digest }}
-          predicate-type: https://cyclonedx.org/bom
-          predicate-path: /home/runner/work/_temp/predicate.json
+          subject-name: ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ needs.build.outputs.image_digest }}
+          sbom-path: 'sbom.cyclonedx.json'
           push-to-registry: true
-          show-summary: true
-
 
   # ==================== IMAGE SIGNING ====================
   sign:
