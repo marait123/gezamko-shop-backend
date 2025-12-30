@@ -189,7 +189,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Frontend settings
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3005,http://127.0.0.1:3005").split(",")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://gezamko-shop-frontend.vercel.app").split(",")
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = FRONTEND_URL
