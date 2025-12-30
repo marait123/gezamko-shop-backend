@@ -16,6 +16,7 @@ env:
   PYTHON_VERSION: "3.12"
   REGISTRY: ${{ secrets.ACR_LOGIN_SERVER }}
   IMAGE_NAME: gezamko-backend
+  FRONTEND_URL: https://gezamko-shop-frontend.vercel.app
 
 jobs:
   # ==================== LINTING ====================
@@ -445,3 +446,4 @@ jobs:
             --name gezamko-backend \
             --resource-group oaminmasters \
             --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:${{ needs.build.outputs.image_tag }}
+            --set-env-vars FRONTEND_URL=${{ env.FRONTEND_URL }}

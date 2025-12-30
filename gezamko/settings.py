@@ -188,12 +188,15 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
+# Frontend settings
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3005,http://127.0.0.1:3005").split(",")
+
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005").split(",")
+CORS_ALLOWED_ORIGINS = FRONTEND_URL
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for frontend
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005").split(",")
+CSRF_TRUSTED_ORIGINS = FRONTEND_URL
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = "Lax"
