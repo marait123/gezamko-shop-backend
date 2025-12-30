@@ -196,7 +196,7 @@ CORS_ALLOWED_ORIGINS = FRONTEND_URL
 CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for frontend
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:3005,http://127.0.0.1:3005,https://gezamko-shop-frontend.vercel.app").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "https://gezamko-shop-frontend.vercel.app").split(",")
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_HTTPONLY = False
 SESSION_COOKIE_SAMESITE = "Lax"
