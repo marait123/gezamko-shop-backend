@@ -446,4 +446,3 @@ jobs:
             --name gezamko-backend \
             --resource-group oaminmasters \
             --image ${{ secrets.ACR_LOGIN_SERVER }}/gezamko-backend:${{ needs.build.outputs.image_tag }}
-            --set-env-vars FRONTEND_URL=${{ env.FRONTEND_URL }}
